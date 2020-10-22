@@ -1,19 +1,35 @@
 # Create your views here.
+
+from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Book
-from .seriallzers import BookSeriallzer
+from api.models import Book
+from api.seriallzers import BookSeriallzer
+from api.utils.authentication import MyAuthentication
+from api.utils.permission import MyPermission
+from api.utils.throttle import VisitThrottle
+from api.utils.version import MyVersion
 
 
 class TestView(APIView):
+    authentication_classes = [MyAuthentication]
+    permission_classes = [MyPermission]
+    throttle_classes = [VisitThrottle]
+    versioning_class = MyVersion
+
     def get(self, request, *args, **kwargs):
+        # self.dispatch()
+        # pprint(request.META)
+        # token = request.META.get('HTTP_TOKEN', None)
+        # print(token)
         data = {
             'message': '我是message'
         }
         return Response(data=data)
 
 
+"""
 class BookView(APIView):
 
     def get(self, request):
@@ -70,3 +86,27 @@ class BookView(APIView):
         instance = Book.objects.filter(id=book_id).first()
         instance.delete()
         return Response({'msg': 1})
+"""
+
+
+class BookView(ListCreateAPIView):
+    serializer_class = BookSeriallzer
+    queryset = Book.objects
+
+
+class BookDetailView(RetrieveAPIView):
+    serializer_class = BookSeriallzer
+    queryset = Book.objects
+    lookup_field = 'id'
+
+
+class BookUpdateView(UpdateAPIView):
+    serializer_class = BookSeriallzer
+    queryset = Book.objects
+    lookup_field = 'id'
+
+
+class BookDeleteView(DestroyAPIView):
+    serializer_class = BookSeriallzer
+    queryset = Book.objects
+    lookup_field = 'id'
