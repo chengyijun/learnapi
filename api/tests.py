@@ -24,3 +24,19 @@ def md5(data):
 
 print(md5('abel'))
 print(md5('tank'))
+
+
+def wrapper(x):
+    print(f'wrapper{x}')
+    x = x + 1
+
+    def inner():
+        print(f'inner{x}')
+        return x
+
+    return inner
+
+
+fun = wrapper(1)
+x = fun()
+print(x)

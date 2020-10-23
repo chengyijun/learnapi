@@ -35,7 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api.apps.ApiConfig',
+    'api',
+    'api2',
     'rest_framework'
 ]
 
@@ -82,8 +83,23 @@ DATABASES = {
         'HOST': '192.168.10.194',
         'POST': 3306,
 
+    },
+    'api2': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'learnapi2',
+        'USER': 'abel',
+        'PASSWORD': 'abel357#',
+        'HOST': '192.168.10.194',
+        'POST': 3306,
+
     }
 }
+DATABASES_APPS_MAPPING = {
+    'api': 'default',
+    'api2': 'api2',
+}
+
+DATABASE_ROUTERS = ['utils.database_router.DatabaseAppsRouter']
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
