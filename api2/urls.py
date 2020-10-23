@@ -8,9 +8,10 @@
 """
 from django.urls import path
 
-from api2.views import TestView
+from api2.views import TestView, GroupDetailView
 
 app_name = 'api2'
 urlpatterns = [
     path('test/', TestView.as_view(), name='test'),
+    path('group/<int:group_id>/', GroupDetailView.as_view(), name='group_detail'),
 ]

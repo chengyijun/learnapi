@@ -8,7 +8,7 @@
 """
 from rest_framework import serializers
 
-from api2.models import UserInfo
+from api2.models import UserInfo, UserGroup
 
 
 class UserSerializer(serializers.Serializer):
@@ -40,6 +40,13 @@ class UserModelSerializer(serializers.ModelSerializer):
     roles_info = serializers.SerializerMethodField()  # 表示自定义方法，显示外键关联详情
     group_title = serializers.CharField(source='group.title')
 
+    # view_name参数 进行传参的时候是参考路由匹配中的name与namespace参数
+    #  lookeup_field参数是根据在UserInfo表中的连表查询字段group_id
+    # look_url_kwarg参数在做url反向解析的时候会用到  即group_detail路由中的id正则匹配名
+    # path('group/<int:group_id>/', GroupDetailView.as_view(), name='group'),
+    group = serializers.HyperlinkedIdentityField(view_name='api2:group_detail', lookup_field='group_id',
+                                                 lookup_url_kwarg='group_id')
+
     def get_roles_info(self, row):
         roles = row.roles.all()
         ret = []
@@ -60,3 +67,9 @@ class UserModelSerializer(serializers.ModelSerializer):
                   'roles_info']  # 自定义需要展示的字段
         # extra_kwargs = {'group': {'source': 'group_id'}}
         # depth = 1 默认是0  只对表字段有效 对自定义字段无效
+
+
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserGroup
+        fields = "__all__"
