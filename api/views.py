@@ -1,24 +1,43 @@
 # Create your views here.
 
 from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.models import Book
 from api.seriallzers import BookSeriallzer
-from api.utils.authentication import MyAuthentication
-from api.utils.permission import MyPermission
-from api.utils.throttle import VisitThrottle
-from api.utils.version import MyVersion
 
 
 class TestView(APIView):
-    authentication_classes = [MyAuthentication]
-    permission_classes = [MyPermission]
-    throttle_classes = [VisitThrottle]
-    versioning_class = MyVersion
+    # authentication_classes = [MyAuthentication]
+    # permission_classes = [MyPermission]
+    # throttle_classes = [VisitThrottle]
+    # versioning_class = MyVersion
+    parser_classes = [MultiPartParser, ]
 
     def get(self, request, *args, **kwargs):
+        print(request.data)
+        # self.dispatch()
+        # pprint(request.META)
+        # token = request.META.get('HTTP_TOKEN', None)
+        # print(token)
+        data = {
+            'message': '我是message'
+        }
+        return Response(data=data)
+
+    def post(self, request, *args, **kwargs):
+        print(request.content_type)
+        print(request.FILES.get('aaa'))
+
+        files = request.FILES.getlist('aaa')
+        for f in files:
+            destination = open('./' + f.name, 'wb+')
+            for chunk in f.chunks():
+                destination.write(chunk)
+            destination.close()
+
         # self.dispatch()
         # pprint(request.META)
         # token = request.META.get('HTTP_TOKEN', None)

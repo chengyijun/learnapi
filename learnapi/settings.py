@@ -79,8 +79,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'learnapi',
         'USER': 'abel',
-        'PASSWORD': 'abel357#',
-        'HOST': '192.168.10.194',
+        'PASSWORD': 'abel',
+        'HOST': '127.0.0.1',
         'POST': 3306,
 
     },
@@ -88,8 +88,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'learnapi2',
         'USER': 'abel',
-        'PASSWORD': 'abel357#',
-        'HOST': '192.168.10.194',
+        'PASSWORD': 'abel',
+        'HOST': '127.0.0.1',
         'POST': 3306,
 
     }
